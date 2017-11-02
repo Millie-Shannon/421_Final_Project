@@ -21,8 +21,17 @@
 
 
 ### Abstract:
-	Tracking presence can be useful for many use cases such as sleep, sitting, vehicle parking, etc. 
-	We could execute various tasks such as making coffee in the morning, switching lights on, or even playing some light music.
+	If you are one of many who find mornings to be difficult, we aim to bring you a pleasant morning wake-up experience. 
+	Imagine waking up to a cup of coffee, your favorite tunes, and pleasant soft lighting without having to lift a finger. 
+	"How is this possible?" you ask. Using pressure sensing technology, our device will track your sleep, collecting information 
+	on duration and quality of sleep. When it is time for you to get up, pleasant music will play to help you wake up.
+	As you get up, soft lights will illuminate to brighten your day, and coffee will begin brewing for you. 
+	Additionally, data collected can be accessed easily to help you observe your sleep trends.  
+
+	The sensor will be placed under your head area (example: pillow), and the force detected by the sensors will be used to determine if you are still in bed or getting up.
+	User input will determine when music will begin playing in the morning. String lights and coffee maker will activate based on the signal output by the pressure sensor.
+	While our device is mainly focused on tracking presence during sleep, the technology can be generalized to many use cases such as sitting, vehicle parking, and others
+	and execute a variety of tasks.  
 
 ### Plan of Approach: 
 #### Detect Presence:
