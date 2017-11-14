@@ -74,3 +74,17 @@
 		- On/Off or pause/play
  
 		
+### Revised Plan of Appraoch (11/14/17):
+#### What We Have:
+	- presence detection using one square FSR
+	- arduino turns on string lights
+	- arduino switches water kettle on using relay
+#### Next Steps:
+	- extend to additional use case (sitting)
+		- by alerting user when seated for too long 
+			- buzzer
+	- add features to original use case
+		- estimate duration of sleep
+		- notification of sleep
+			- self reminder on daily basis
+			- email to professor when <3 hours of sleep
