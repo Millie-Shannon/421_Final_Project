@@ -8,6 +8,8 @@ int sleepdur = 0;
 int relaypin = 9;  
 int ledState = 0;
 int x = 0; 
+int sleepArray[7];
+int n = 0;
 
 #define NOTE_C4 262
 #define NOTE_E4 330
@@ -18,11 +20,11 @@ int x = 0;
 void setup() {
   // put your setup code here, to run once:
 Serial.begin(9600);
+CircuitPlayground.begin();
 pinMode(lightpin, OUTPUT);
 digitalWrite(lightpin, LOW); 
 pinMode(relaypin, OUTPUT);
 digitalWrite(relaypin, LOW);
-CircuitPlayground.begin();
 }
 
 void loop() {
@@ -42,13 +44,25 @@ void loop() {
     //Serial.println(tsleep);
   }
   if (mode == 0 &&  nopress > 10) {
-    Serial.println("I'm awake!"); 
+    //Serial.println("I'm awake!"); 
     delay(200); 
     digitalWrite(lightpin,HIGH);
     digitalWrite(relaypin,HIGH);
     sleepdur = tsleep/10; //3600 seconds in an hour
                           //counts duration of sleep in hours
     //Serial.println(sleepdur);
+  }
+
+  if (mode == 0 && nopress == 10) {
+    sleepArray[n] = sleepdur;
+    n = n+1;
+    nopress = 0;    
+    tsleep = 0; 
+  }
+
+  if (CircuitPlayground.leftButton() == 1 || CircuitPlayground.rightButton() == 1) {
+    digitalWrite(lightpin,LOW);
+    digitalWrite(relaypin,LOW);
   }
 
 //Slide Switch + (Mode 1): Sitting Case 
@@ -87,7 +101,7 @@ x = tsit % 5;
     CircuitPlayground.playTone(NOTE_G4, 1100);
     //delay(5000);
   }
-  Serial.println(ledState);
+  //Serial.println(ledState);
   //Serial.println(tsit);
 
 }
