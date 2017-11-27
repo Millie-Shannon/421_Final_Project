@@ -1,22 +1,22 @@
 // Feel Free to edit these variables ///////////////////////////
-String xLabel = "Analogue Inputs";
-String yLabel = "Voltage (V)";
-String Heading = "The Graph Sketch";
-String URL = "01/02/2010";
-float Vcc = 5.0; // the measured voltage of your usb
-int NumOfVertDivisions=5; // dark gray
-int NumOfVertSubDivisions=10; // light gray
+String xLabel = "Days of the Week";
+String yLabel = "Hours of Sleep";
+String Heading = "Sleep Summary";
+// String URL = "01/02/2010";
+float Vcc = 5; // the measured voltage of your usb
+int NumOfVertDivisions=12; // dark gray
+int NumOfVertSubDivisions=12; // light gray
 int NumOfBars=6; // you can choose the number of bars, but it can cause issues
  // since you should change what the arduino sends
 // if these are changed, background image has problems
 // a plain background solves the problem
-int ScreenWidth = 600, ScreenHeight=400;
+int ScreenWidth = 600, ScreenHeight=600;
 /////////////////////////////////////////////////////////
 // Serial port stuff ///////////////////////
 import processing.serial.*;
 Serial myPort;
 boolean firstContact = false;
-int[] serialInArray = new int[6];
+int[] serialInArray = new int[7];
 int serialCount = 0;
 ///////////////////////////////////////////////
 int LeftMargin=100;
@@ -39,7 +39,7 @@ void setup(){
 DivisounsWidth = (ScreenWidth-LeftMargin-RightMArgin)/(NumOfBars);
  BarWidth = int(BarPercent*float(DivisounsWidth));
  BarGap = DivisounsWidth - BarWidth;
-size(600,400);
+size(600,600);
  font = createFont("Arial",12);
 textAlign(CENTER);
  textFont(font);
@@ -70,7 +70,7 @@ if (firstContact == false) {
 // If we have 6 bytes:
  if (serialCount > 5 ) {
 for (int x=0;x<6;x++){
-bars[x] = int (yRatio*(ScreenHeight)*(serialInArray[x]/256.0));
+bars[x] = int (yRatio*(ScreenHeight)*(serialInArray[x])/12);
 }
 // Send a capital A to request new sensor readings:
  myPort.write('A');
@@ -92,13 +92,13 @@ void Headings(){
 void PrintBars(){
 int c=0;
  for (int i=0;i<NumOfBars;i++){
-fill((0xe4+c),(255-bars[i]+c),(0x1a+c));
+fill((0xe4+c),(bars[i]+c),(0x1a+c));
  stroke(90);
  rect(i*DivisounsWidth+LeftMargin, ScreenHeight-GraphYposition, BarWidth, -bars[i]);
  fill(0x2e,0x2a,0x2a);
- text(float(bars[i])/(yRatio*(ScreenHeight))*Vcc, i*DivisounsWidth+LeftMargin+BarWidth/2, ScreenHeight-bars[i]-5-GraphYposition );
- text("A", i*DivisounsWidth+LeftMargin+BarWidth/2 -5, ScreenHeight-GraphYposition+20 );
- text(i, i*DivisounsWidth+LeftMargin+BarWidth/2 +5, ScreenHeight-GraphYposition+20 );
+ //text(float(bars[i])/(yRatio*(ScreenHeight))*Vcc, i*DivisounsWidth+LeftMargin+BarWidth/2, ScreenHeight-bars[i]-10-GraphYposition );
+// text("A", i*DivisounsWidth+LeftMargin+BarWidth/2 -10, ScreenHeight-GraphYposition+20 );
+ text(i+1, i*DivisounsWidth+LeftMargin+BarWidth/2+0, ScreenHeight-GraphYposition+20 );
  }
 }
 void Axis(){
@@ -138,6 +138,6 @@ textFont(font,18);
  text(Heading,LeftMargin+(ScreenWidth-LeftMargin-RightMArgin-50)/2,70);
  textFont(font);
 fill(150);
- text(URL,ScreenWidth-RightMArgin-40,ScreenHeight-15);
+ //text(URL,ScreenWidth-RightMArgin-40,ScreenHeight-15);
  textFont(font);
 }
