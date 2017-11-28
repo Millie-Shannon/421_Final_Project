@@ -1,4 +1,11 @@
 // Feel Free to edit these variables ///////////////////////////
+// We found this code "Arduino + Processing: Analogue Bar Graph" at https://boolscott.wordpress.com 
+// We modified Scott's example code to fit our array of sleeping data
+// We changed the graph to have  7 bars instead of 6
+// We changed the scaling and formatting of the axes (title, labels, vertical divisions, etc.)
+// We changed the scaling of the data to display the correct numbers (before, the code was converting
+// the inputs into voltage)
+
 String xLabel = "Days of the Week";
 String yLabel = "Hours of Sleep";
 String Heading = "Sleep Summary";
@@ -6,7 +13,7 @@ String Heading = "Sleep Summary";
 float Vcc = 5; // the measured voltage of your usb
 int NumOfVertDivisions=12; // dark gray
 int NumOfVertSubDivisions=12; // light gray
-int NumOfBars=6; // you can choose the number of bars, but it can cause issues
+int NumOfBars=7; // you can choose the number of bars, but it can cause issues
  // since you should change what the arduino sends
 // if these are changed, background image has problems
 // a plain background solves the problem
@@ -67,9 +74,9 @@ if (firstContact == false) {
  // Add the latest byte from the serial port to array:
  serialInArray[serialCount] = inByte;
  serialCount++;
-// If we have 6 bytes:
- if (serialCount > 5 ) {
-for (int x=0;x<6;x++){
+// If we have 7 bytes:
+ if (serialCount > 6 ) {
+for (int x=0;x<7;x++){
 bars[x] = int (yRatio*(ScreenHeight)*(serialInArray[x])/12);
 }
 // Send a capital A to request new sensor readings:
