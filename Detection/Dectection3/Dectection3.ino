@@ -9,7 +9,7 @@ int sleepdur = 0;
 int relaypin = 9;  
 int ledState = 0;
 int x = 0; 
-int sleepArray[8] ;
+int sleepArray[7] ;
 int n = 1;
 int state = 0; 
 int i;
@@ -57,13 +57,13 @@ void loop() {
     //Serial.println(sleepdur);
   }
 
-  if (mode == 0 && nopress == 10 && n < 9) {    // store our new sleep duration to new index in vector 
+  if (mode == 0 && nopress == 11 && n != 9) {    // store our new sleep duration to new index in vector 
     sleepArray[n-1] = sleepdur;
     n = n+1;
   }
 
     
-  if (mode == 0 && nopress == 10 && n >= 9) {   // once the vector is full, shift current duration values 
+  if (mode == 0 && nopress == 11 && n == 9) {   // once the vector is full, shift current duration values 
                                                 // into previous index and add new duration value
     sleepArray[0] = sleepArray[1];
     sleepArray[1] = sleepArray[2];
@@ -71,9 +71,9 @@ void loop() {
     sleepArray[3] = sleepArray[4];
     sleepArray[4] = sleepArray[5];
     sleepArray[5] = sleepArray[6];
-    sleepArray[6] = sleepArray[7];
-    sleepArray[7] = sleepArray[8];
-    sleepArray[8] = sleepdur;
+    sleepArray[6] = sleepdur;
+//    sleepArray[7] = sleepArray[8];
+//    sleepArray[8] = sleepdur;
   }
     //Serial.println(sleepdur); 
 
@@ -81,13 +81,14 @@ void loop() {
     if (Serial.available() > 0) {             // send duration array to Processing
      // get incoming byte:
      inByte = Serial.read();
- //    Serial.write(sleepArray[1]);
+     Serial.write(sleepArray[0]);
+     Serial.write(sleepArray[1]);
      Serial.write(sleepArray[2]);
      Serial.write(sleepArray[3]);
      Serial.write(sleepArray[4]);
      Serial.write(sleepArray[5]);
      Serial.write(sleepArray[6]);
-     Serial.write(sleepArray[7]); 
+//     Serial.write(sleepArray[7]); 
     }
 
   if (CircuitPlayground.leftButton() == 1 || CircuitPlayground.rightButton() == 1) {
