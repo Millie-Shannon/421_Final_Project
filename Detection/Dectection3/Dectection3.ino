@@ -14,6 +14,7 @@ int n = 1;
 int state = 0; 
 int i;
 int inByte = 0;
+int nosit = 0; 
 
 //tones for sitting use case alarm
 #define NOTE_C4 262
@@ -34,7 +35,7 @@ void loop() {
   int sensorValue = analogRead(A10);        // pressure sensor input
 
   mode = CircuitPlayground.slideSwitch();   // mode defines use case (+ is sitting, - is sleeping)
-  delay(200);
+  delay(5000);                              // collects information every 5 seconds (e.g. tsleep)
 
 //SlideSwitch - (Mode 0)> Sleeping Case
   if (mode == 0 && sensorValue < 100 && state ==0) {
@@ -48,13 +49,11 @@ void loop() {
   }
   
   if (mode == 0 &&  nopress > 10 && state == 0) {   // when no presence is detected for a significant duration
-    delay(200); 
     digitalWrite(lightpin,HIGH);            // turn lights on
     digitalWrite(relaypin,HIGH);          
     CircuitPlayground.setPixelColor(0,200,200,0);
-    sleepdur = tsleep/2;                    //3600 seconds in an hour
+    sleepdur = tsleep/720;                  //3600 seconds in an hour, (720 5-second segments)
                                             //counts duration of sleep in hours
-    //Serial.println(sleepdur);
   }
 
   if (mode == 0 && nopress == 11 && n != 9) {    // store our new sleep duration to new index in vector 
@@ -72,12 +71,8 @@ void loop() {
     sleepArray[4] = sleepArray[5];
     sleepArray[5] = sleepArray[6];
     sleepArray[6] = sleepdur;
-//    sleepArray[7] = sleepArray[8];
-//    sleepArray[8] = sleepdur;
   }
-    //Serial.println(sleepdur); 
 
- // if (CircuitPlayground.rightButton() == 1) { 
     if (Serial.available() > 0) {             // send duration array to Processing
      // get incoming byte:
      inByte = Serial.read();
@@ -88,7 +83,6 @@ void loop() {
      Serial.write(sleepArray[4]);
      Serial.write(sleepArray[5]);
      Serial.write(sleepArray[6]);
-//     Serial.write(sleepArray[7]); 
     }
 
   if (CircuitPlayground.leftButton() == 1 || CircuitPlayground.rightButton() == 1) {
@@ -104,13 +98,23 @@ void loop() {
   if (mode == 1 && sensorValue > 100) {     // when presence is detected, begin counting
     delay(1000); // detects for presence every 1 second
     tsit = tsit + 1;
+    nosit = 0; 
   }
   
   if (mode == 1 && sensorValue < 100) {     // resets counter when user has gotten up
     delay(1000);
-    tsit = 0;    
+    nosit = nosit + 1; 
+ //   tsit = 0;    
   }
 
+  if (mode == 1 && nosit > 5 && sensorValue < 100) {
+    tsit = 0; 
+  }
+
+Serial.println("Tsit");
+Serial.println(tsit);
+Serial.println("Nosit");
+Serial.println(nosit);
 // notification system that user has been sitting for too long
   if (mode == 1 && tsit > 5 && ledState == 0) {     // if seated for too long,
     CircuitPlayground.setPixelColor(0,200,200,0);   // lights on circuit playground will blink
