@@ -40,7 +40,8 @@ void loop() {
   }
   if (mode == 0 && sensorValue > 100) {
     tsleep = tsleep + 1;
-    Serial.println(tsleep);
+   // Serial.println("TSleep:");
+   // Serial.println(tsleep);
     state = 0; 
   }
   if (mode == 0 &&  nopress > 3 && state == 0) {
@@ -51,16 +52,17 @@ void loop() {
     CircuitPlayground.setPixelColor(0,200,200,0);
     sleepdur = tsleep; //3600 seconds in an hour
                           //counts duration of sleep in hours
-    //Serial.println(sleepdur);
+    Serial.println("Sleep Duration:");                      
+    Serial.println(sleepdur);
   }
 
-  if (mode == 0 && nopress == 10 && n < 9) {
+  if (mode == 0 && nopress == 4 && n != 9) {
     sleepArray[n-1] = sleepdur;
     n = n+1;
   }
 //Serial.println(n);
 
-  if (mode == 0 && nopress == 10 && n == 9) {
+  if (mode == 0 && nopress == 4 && n == 9) {
     sleepArray[0] = sleepArray[1];
     sleepArray[1] = sleepArray[2];
     sleepArray[2] = sleepArray[3];
@@ -71,14 +73,14 @@ void loop() {
     sleepArray[7] = sleepArray[8];
     sleepArray[8] = sleepdur;
   }
-/*
-  if (CircuitPlayground.rightButton() == 1) {
+
+ if (CircuitPlayground.rightButton() == 1) {
     Serial.println("ARRAY!!");
     for(int i=0; i<8; ++i){
       Serial.println(sleepArray[i]);
     }
   }
- */
+
 
     //Serial.println(sleepdur); 
 
